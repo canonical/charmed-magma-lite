@@ -27,6 +27,10 @@ storage:
     minimum-size: 1M
     location: /tmp/certs
 
+provides:
+  controller:
+    interface: certs
+
 requires:
   db:
     interface: pgsql

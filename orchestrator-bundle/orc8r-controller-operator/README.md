@@ -2,7 +2,7 @@
 
 ## Description
 
-This charm is for deploying magma controller which includes most of orchestrator services.
+This charm is for deploying magma controller which includes all of orchestrator's core services.
 
 ## Usage
 

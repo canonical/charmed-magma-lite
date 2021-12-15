@@ -17,6 +17,7 @@ from ops.model import ActiveStatus, BlockedStatus, MaintenanceStatus, WaitingSta
 from ops.pebble import Layer
 from pgconnstr import ConnectionString  # type: ignore[import]
 
+from client_relations import ClientRelations
 from self_signed_certs_creator import (
     CertificateSigningRequestCreator,
     SelfSignedCertsCreator,
@@ -36,6 +37,7 @@ class MagmaOrc8rControllerCharm(CharmBase):
         self._container_name = self._service_name = "magma-orc8r-controller"
         self._container = self.unit.get_container(self._container_name)
         self._namespace = self.model.name
+        self.client_relations = ClientRelations(self, "client_relations")
         self._db = pgsql.PostgreSQLClient(self, "db")  # type: ignore[attr-defined]
         self.framework.observe(self.on.install, self._on_install)
         self.framework.observe(
