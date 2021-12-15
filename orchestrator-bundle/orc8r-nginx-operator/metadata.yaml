@@ -1,7 +1,7 @@
 # Copyright 2021 Canonical Ltd.
 # See LICENSE file for licensing details.
 
-name: magma-orc8r-nginx
+name: magma-orc8r-nginx-lite
 description: |
   Proxies traffic between the outside world and orc8r.
   

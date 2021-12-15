@@ -1,7 +1,7 @@
 # Copyright 2021 Canonical Ltd.
 # See LICENSE file for licensing details.
 
-name: magma-orc8r-controller
+name: magma-orc8r-controller-lite
 description: |
   magma-orc8r-controller
 summary: |

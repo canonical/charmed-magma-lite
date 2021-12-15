@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 METADATA = yaml.safe_load(Path("./metadata.yaml").read_text())
 
 APPLICATION_NAME = "orc8r-controller"
-CHARM_NAME = "magma-orc8r-controller"
+CHARM_NAME = "magma-orc8r-controller-lite"
 
 
 class TestOrc8rcontroller:

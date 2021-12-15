@@ -10,7 +10,7 @@ You can deploy the controller from a locally built package:
 
 ```bash
 juju deploy postgresql-k8s
-juju deploy ./magma-orc8r-controller_ubuntu-20.04-amd64.charm \
+juju deploy ./magma-orc8r-controller-lite_ubuntu-20.04-amd64.charm \
   orc8r-controller \
   --config domain=example.com \
   --resource magma-orc8r-controller-image=docker.artifactory.magmacore.org/controller:1.6.0
