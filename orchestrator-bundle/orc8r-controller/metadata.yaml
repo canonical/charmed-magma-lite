@@ -1,0 +1,32 @@
+# Copyright 2021 Canonical Ltd.
+# See LICENSE file for licensing details.
+
+name: magma-orc8r-controller
+description: |
+  magma-orc8r-controller
+summary: |
+  magma-orc8r-controller
+
+containers:
+  magma-orc8r-controller:
+    resource: magma-orc8r-controller-image
+    mounts:
+      - storage: certs
+        location: /tmp/certs
+
+resources:
+  magma-orc8r-controller-image:
+    type: oci-image
+    description: OCI image for magma-orc8r-controller (docker.artifactory.magmacore.org/controller:latest)
+    upstream-source: docker.artifactory.magmacore.org/controller:latest
+
+storage:
+  certs:
+    type: filesystem
+    description: Temp certs storage
+    minimum-size: 1M
+    location: /tmp/certs
+
+requires:
+  db:
+    interface: pgsql
