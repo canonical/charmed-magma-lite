@@ -40,7 +40,7 @@ class MagmaOrc8rControllerCharm(CharmBase):
         self.framework.observe(self.on.install, self._on_install)
         self.framework.observe(
             self.on.magma_orc8r_controller_pebble_ready,
-            self._on_magma_orc8r_controller_pebble_ready
+            self._on_magma_orc8r_controller_pebble_ready,
         )
         self.framework.observe(
             self._db.on.database_relation_joined, self._on_database_relation_joined
@@ -315,18 +315,10 @@ class MagmaOrc8rControllerCharm(CharmBase):
             "bootstrapper.key": self._encode_in_base64(
                 open("/tmp/certs/bootstrapper.key", "rb").read()
             ),
-            "certifier.key": self._encode_in_base64(
-                open("/tmp/certs/certifier.key", "rb").read()
-            ),
-            "certifier.pem": self._encode_in_base64(
-                open("/tmp/certs/certifier.pem", "rb").read()
-            ),
-            "vpn_ca.key": self._encode_in_base64(
-                open("/tmp/certs/vpn_ca.key", "rb").read()
-            ),
-            "vpn_ca.crt": self._encode_in_base64(
-                open("/tmp/certs/vpn_ca.crt", "rb").read()
-            ),
+            "certifier.key": self._encode_in_base64(open("/tmp/certs/certifier.key", "rb").read()),
+            "certifier.pem": self._encode_in_base64(open("/tmp/certs/certifier.pem", "rb").read()),
+            "vpn_ca.key": self._encode_in_base64(open("/tmp/certs/vpn_ca.key", "rb").read()),
+            "vpn_ca.crt": self._encode_in_base64(open("/tmp/certs/vpn_ca.crt", "rb").read()),
             "rootCA.key": self._encode_in_base64(open("/tmp/certs/rootCA.key", "rb").read()),
             "rootCA.pem": self._encode_in_base64(open("/tmp/certs/rootCA.pem", "rb").read()),
         }
@@ -336,7 +328,7 @@ class MagmaOrc8rControllerCharm(CharmBase):
         return {
             "nms-certs": nms_certs_data,
             "orc8r-certs": orc8r_certs_data,
-            "supervisor-conf": supervisor_data
+            "supervisor-conf": supervisor_data,
         }
 
     @staticmethod

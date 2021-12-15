@@ -85,7 +85,7 @@ class TestCharm(unittest.TestCase):
             expected_plan = {
                 "services": {
                     "magma-orc8r-controller": {
-                        'summary': 'magma-orc8r-controller',
+                        "summary": "magma-orc8r-controller",
                         "override": "replace",
                         "startup": "enabled",
                         "command": "/usr/bin/supervisord",
