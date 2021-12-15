@@ -11,11 +11,13 @@ from pytest_operator.plugin import OpsTest  # type: ignore[import]  # noqa: F401
 
 logger = logging.getLogger(__name__)
 METADATA = yaml.safe_load(Path("./metadata.yaml").read_text())
-controller_METADATA = yaml.safe_load(Path("../orc8r-controller-operator/metadata.yaml").read_text())
+CONTROLLER_METADATA = yaml.safe_load(
+    Path("../orc8r-controller-operator/metadata.yaml").read_text()
+)
 APPLICATION_NAME = "orc8r-nginx"
 CHARM_NAME = "magma-orc8r-nginx"
-controller_APPLICATION_NAME = "orc8r-controller"
-controller_CHARM_NAME = "magma-orc8r-controller"
+CONTROLLER_APPLICATION_NAME = "orc8r-controller"
+CONTROLLER_CHARM_NAME = "magma-orc8r-controller"
 
 
 class TestOrc8rNginx:
@@ -47,20 +49,20 @@ class TestOrc8rNginx:
     async def _deploy_orc8r_controller(ops_test):
         charm = await ops_test.build_charm("../orc8r-controller-operator/")
         resources = {
-            f"{controller_CHARM_NAME}-image": controller_METADATA["resources"][
-                f"{controller_CHARM_NAME}-image"
+            f"{CONTROLLER_CHARM_NAME}-image": CONTROLLER_METADATA["resources"][
+                f"{CONTROLLER_CHARM_NAME}-image"
             ]["upstream-source"],
         }
         await ops_test.model.deploy(
             charm,
             resources=resources,
-            application_name=controller_APPLICATION_NAME,
+            application_name=CONTROLLER_APPLICATION_NAME,
             config={"domain": "example.com"},
             trust=True,
         )
         await ops_test.model.add_relation(
-            relation1=controller_APPLICATION_NAME, relation2="postgresql-k8s:db"
+            relation1=CONTROLLER_APPLICATION_NAME, relation2="postgresql-k8s:db"
         )
         await ops_test.model.wait_for_idle(
-            apps=[controller_APPLICATION_NAME], status="active", timeout=1000
+            apps=[CONTROLLER_APPLICATION_NAME], status="active", timeout=1000
         )

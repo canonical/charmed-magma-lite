@@ -7,13 +7,7 @@ from typing import List
 
 from charms.observability_libs.v0.kubernetes_service_patch import KubernetesServicePatch
 from lightkube import Client
-from lightkube.models.core_v1 import (
-    SecretVolumeSource,
-    ServicePort,
-    ServiceSpec,
-    Volume,
-    VolumeMount,
-)
+from lightkube.models.core_v1 import SecretVolumeSource, Volume, VolumeMount
 from lightkube.resources.apps_v1 import StatefulSet
 from ops.charm import CharmBase
 from ops.main import main
@@ -103,7 +97,7 @@ class MagmaOrc8rNginxCharm(CharmBase):
                 "TEST_MODE": "1",
                 "SSL_CERTIFICATE": "/var/opt/magma/certs/controller.crt",
                 "SSL_CERTIFICATE_KEY": "/var/opt/magma/certs/controller.key",
-                "SSL_CLIENT_CERTIFICATE": "/var/opt/magma/certs/certifier.pem"
+                "SSL_CLIENT_CERTIFICATE": "/var/opt/magma/certs/certifier.pem",
             },
         )
         stdout, _ = process.wait_output()
