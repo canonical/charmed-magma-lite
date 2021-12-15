@@ -6,15 +6,15 @@ description: |
   allows you to see the analytics and traffic flows of the wireless users through the Magma web UI.
 applications:
   orc8r-nginx:
-    charm: magma-orc8r-nginx
+    charm: magma-orc8r-nginx-lite
     series: kubernetes
     channel: edge
     revision: 1
     resources:
-      magma-orc8r-nginx-image: 2
+      magma-orc8r-nginx-image: 1
     scale: 1
   orc8r-controller:
-    charm: magma-orc8r-controller
+    charm: magma-orc8r-controller-lite
     series: kubernetes
     channel: edge
     revision: 1
@@ -32,5 +32,5 @@ applications:
 relations:
 - - orc8r-controller:db
   - postgresql-k8s:db
-- - orc8r-nginx:certifier
-  - orc8r-certifier:certifier
+- - orc8r-nginx:controller
+  - orc8r-controller:controller
