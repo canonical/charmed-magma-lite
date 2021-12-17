@@ -2,6 +2,7 @@
 # Copyright 2021 Canonical Ltd.
 # See LICENSE file for licensing details.
 
+import asyncio
 import logging
 from pathlib import Path
 
@@ -23,8 +24,9 @@ CONTROLLER_CHARM_NAME = "magma-orc8r-controller"
 class TestOrc8rNginx:
     @pytest.fixture(scope="module")
     async def setup(self, ops_test):
-        await self._deploy_postgresql(ops_test)
-        await self._deploy_orc8r_controller(ops_test)
+        await asyncio.gather(
+            self._deploy_postgresql(ops_test), self._deploy_orc8r_controller(ops_test)
+        )
 
     @pytest.mark.abort_on_fail
     async def test_build_and_deploy(self, ops_test, setup):
