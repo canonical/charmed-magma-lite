@@ -16,9 +16,9 @@ CONTROLLER_METADATA = yaml.safe_load(
     Path("../orc8r-controller-operator/metadata.yaml").read_text()
 )
 APPLICATION_NAME = "orc8r-nginx"
-CHARM_NAME = "magma-orc8r-nginx"
+CHARM_NAME = "magma-orc8r-nginx-lite"
 CONTROLLER_APPLICATION_NAME = "orc8r-controller"
-CONTROLLER_CHARM_NAME = "magma-orc8r-controller"
+CONTROLLER_CHARM_NAME = "magma-orc8r-controller-lite"
 
 
 class TestOrc8rNginx:
