@@ -5,6 +5,8 @@
 import logging
 from typing import List
 
+from charms.nginx_ingress_integrator.v0.ingress import IngressRequires
+
 from charms.observability_libs.v0.kubernetes_service_patch import KubernetesServicePatch
 from lightkube import Client
 from lightkube.models.core_v1 import SecretVolumeSource, Volume, VolumeMount
@@ -39,6 +41,18 @@ class MagmaOrc8rNginxCharm(CharmBase):
             ],
             "LoadBalancer",
         )
+        self.ingress = IngressRequires(
+            self,
+            {
+                "service-hostname": self._external_hostname,
+                "service-name": self.app.name,
+                "service-port": 9443,
+            },
+        )
+
+    @property
+    def _external_hostname(self):
+        return f"orc8r-controller.{self._get_domain_name}"
 
     def _on_magma_orc8r_nginx_pebble_ready(self, event):
         if not self._relations_ready:
@@ -91,7 +105,7 @@ class MagmaOrc8rNginxCharm(CharmBase):
             command=["/usr/local/bin/generate_nginx_configs.py"],
             environment={
                 "PROXY_BACKENDS": "orc8r-controller",
-                "CONTROLLER_HOSTNAME": f"orc8r-controller.{self._get_domain_name}",
+                "CONTROLLER_HOSTNAME": self._external_hostname,
                 "RESOLVER": "kube-dns.kube-system.svc.cluster.local valid=10s",
                 "SERVICE_REGISTRY_MODE": "yaml",
                 "TEST_MODE": "1",

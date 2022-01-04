@@ -9,15 +9,17 @@ magma-orc8r-nginx facilitates communication the outside world and orchestrator.
 **magma-orc8r-nginx** can be deployed via Juju command line using below commands:
 
 ```bash
-juju deploy ./magma-orc8r-nginx-lite_ubuntu-20.04-amd64.charm --resource magma-orc8r-nginx-image=docker.io/library/orc8r_nginx:latest
+juju deploy ./magma-orc8r-nginx-lite_ubuntu-20.04-amd64.charm --resource magma-orc8r-nginx-image=docker.artifactory.magmacore.org/nginx:latest
 ```
 
 **IMPORTANT**: For now, deploying this charm must be done with an alias as shown above.
 
-To work correctly, **magma-orc8r-nginx** requires relationship to **magma-orc8r-controller**:
+To work correctly, **magma-orc8r-nginx** requires relationship to **magma-orc8r-controller** and 
+**nginx-ingress-integratior**:
 
 ```bash
 juju relate magma-orc8r-nginx-lite:controller orc8r-controller:controller
+juju relate magma-orc8r-nginx-lite:ingress nginx-ingress-integrator
 ```
 
 Before running any **juju deploy** commands, make sure charm has been built using:
