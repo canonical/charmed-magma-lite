@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 METADATA = yaml.safe_load(Path("./metadata.yaml").read_text())
 
 APPLICATION_NAME = "orc8r-controller"
-CHARM_NAME = "magma-orc8r-controller-lite"
+IMAGE_NAME = "magma-orc8r-controller-image"
 
 
 class TestOrc8rcontroller:
@@ -26,7 +26,7 @@ class TestOrc8rcontroller:
     async def test_build_and_deploy(self, ops_test, setup):
         charm = await ops_test.build_charm(".")
         resources = {
-            f"{CHARM_NAME}-image": METADATA["resources"][f"{CHARM_NAME}-image"]["upstream-source"],
+            IMAGE_NAME: METADATA["resources"][IMAGE_NAME]["upstream-source"],
         }
         await ops_test.model.deploy(
             charm,

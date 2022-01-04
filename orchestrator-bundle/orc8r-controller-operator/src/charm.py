@@ -38,7 +38,7 @@ class MagmaOrc8rControllerCharm(CharmBase):
         self._container = self.unit.get_container(self._container_name)
         self._namespace = self.model.name
         self.client_relations = ClientRelations(self, "client_relations")
-        self._db = pgsql.PostgreSQLClient(self, "db")  # type: ignore[attr-defined]
+        self._db = pgsql.PostgreSQLClient(self, "db")
         self.framework.observe(self.on.install, self._on_install)
         self.framework.observe(
             self.on.magma_orc8r_controller_pebble_ready,
