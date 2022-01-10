@@ -41,6 +41,12 @@ class MagmaOrc8rNginxCharm(CharmBase):
             ],
             "LoadBalancer",
         )
+
+    @property
+    def _external_hostname(self):
+        return f"orc8r-controller.{self._get_domain_name}"
+
+    def _set_ingress(self):
         self.ingress = IngressRequires(
             self,
             {
@@ -50,15 +56,12 @@ class MagmaOrc8rNginxCharm(CharmBase):
             },
         )
 
-    @property
-    def _external_hostname(self):
-        return f"orc8r-controller.{self._get_domain_name}"
-
     def _on_magma_orc8r_nginx_pebble_ready(self, event):
         if not self._relations_ready:
             event.defer()
             return
         self._configure_pebble_layer(event)
+        self._set_ingress()
 
     def _on_controller_relation_changed(self, event):
         """Mounts certificates required by the nms-magmalte."""
@@ -156,12 +159,19 @@ class MagmaOrc8rNginxCharm(CharmBase):
     @property
     def _relations_ready(self) -> bool:
         """Checks whether required relations are ready."""
-        if not self.model.get_relation("controller"):
-            msg = f"Waiting for relations: {'controller'}"
+        required_relations = ["controller", "ingress"]
+        missing_relations = [
+            relation
+            for relation in required_relations
+            if not self.model.get_relation(relation)
+            or len(self.model.get_relation(relation).units) == 0  # noqa: W503
+        ]
+        if missing_relations:
+            msg = f"Waiting for relations: {', '.join(missing_relations)}"
             self.unit.status = BlockedStatus(msg)
             return False
         if not self._get_domain_name:
-            self.unit.status = WaitingStatus("Waiting for controller relation to be ready...")
+            self.unit.status = WaitingStatus("Waiting for certifier relation to be ready...")
             return False
         return True
 
@@ -178,11 +188,11 @@ class MagmaOrc8rNginxCharm(CharmBase):
     @property
     def _get_domain_name(self):
         """Gets domain name for the data bucket sent by controller relation."""
-        controller_relation = self.model.get_relation("controller")
-        units = controller_relation.units
-        logger.info(f"controller_relation: {controller_relation}")
-        logger.info(f"Controller relation data: {controller_relation.data}")
         try:
+            controller_relation = self.model.get_relation("controller")
+            units = controller_relation.units
+            logger.info(f"controller_relation: {controller_relation}")
+            logger.info(f"Controller relation data: {controller_relation.data}")
             return controller_relation.data[next(iter(units))]["domain"]
         except KeyError:
             return None
