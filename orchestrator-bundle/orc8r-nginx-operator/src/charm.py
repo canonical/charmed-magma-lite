@@ -165,11 +165,11 @@ class MagmaOrc8rNginxCharm(CharmBase):
     def _get_domain_name(self):
         """Gets domain name for the data bucket sent by controller relation."""
         controller_relation = self.model.get_relation("controller")
-        units = controller_relation.units
+        units = controller_relation.units  # type: ignore[union-attr]
         logger.info(f"controller_relation: {controller_relation}")
-        logger.info(f"Controller relation data: {controller_relation.data}")
+        logger.info(f"Controller relation data: {controller_relation.data}")  # type: ignore[union-attr]  # noqa: E501
         try:
-            return controller_relation.data[next(iter(units))]["domain"]
+            return controller_relation.data[next(iter(units))]["domain"]  # type: ignore[union-attr]  # noqa: E501
         except KeyError:
             return None
         except StopIteration:
