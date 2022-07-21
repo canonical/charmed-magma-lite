@@ -5,7 +5,10 @@
 import logging
 from typing import List
 
-from charms.observability_libs.v0.kubernetes_service_patch import KubernetesServicePatch
+from charms.observability_libs.v1.kubernetes_service_patch import (
+    KubernetesServicePatch,
+    ServicePort,
+)
 from lightkube import Client
 from lightkube.models.core_v1 import SecretVolumeSource, Volume, VolumeMount
 from lightkube.resources.apps_v1 import StatefulSet
@@ -32,10 +35,10 @@ class MagmaOrc8rNginxCharm(CharmBase):
         self.service_patcher = KubernetesServicePatch(
             self,
             [
-                ("open", 7444, 8444, 31694),
-                ("health", 80, 80, 32035),
-                ("clientcert", 7443, 8443, 30130),
-                ("api", 9443, 9443, 30794),
+                ServicePort(name="open", port=7444, targetPort=8444, nodePort=31694),
+                ServicePort(name="health", port=80, nodePort=32035),
+                ServicePort(name="clientcert", port=7443, targetPort=8443, nodePort=30130),
+                ServicePort(name="api", port=9443, nodePort=30794),
             ],
             "LoadBalancer",
         )
@@ -165,11 +168,11 @@ class MagmaOrc8rNginxCharm(CharmBase):
     def _get_domain_name(self):
         """Gets domain name for the data bucket sent by controller relation."""
         controller_relation = self.model.get_relation("controller")
-        units = controller_relation.units
+        units = controller_relation.units  # type: ignore[union-attr]
         logger.info(f"controller_relation: {controller_relation}")
-        logger.info(f"Controller relation data: {controller_relation.data}")
+        logger.info(f"Controller relation data: {controller_relation.data}")  # type: ignore[union-attr]  # noqa: E501
         try:
-            return controller_relation.data[next(iter(units))]["domain"]
+            return controller_relation.data[next(iter(units))]["domain"]  # type: ignore[union-attr]  # noqa: E501
         except KeyError:
             return None
         except StopIteration:

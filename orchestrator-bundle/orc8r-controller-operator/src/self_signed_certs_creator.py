@@ -126,7 +126,7 @@ class SelfSignedCertsCreator:
                 ),
                 critical=False,
             )
-            .sign(signing_key, hashes.SHA256())
+            .sign(signing_key, hashes.SHA256())  # type: ignore[arg-type]
         )
         self.cert = cert.public_bytes(serialization.Encoding.PEM)  # type: ignore[assignment]
         self.private_key = signing_key.private_bytes(  # type: ignore[assignment]
@@ -177,6 +177,6 @@ class CertificateSigningRequestCreator:
         csr = (
             x509.CertificateSigningRequestBuilder()
             .subject_name(subject)
-            .sign(signing_key, hashes.SHA256())
+            .sign(signing_key, hashes.SHA256())  # type: ignore[arg-type]
         )
         self.csr = csr.public_bytes(serialization.Encoding.PEM)  # type: ignore[assignment]
